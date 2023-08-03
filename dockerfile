@@ -1,0 +1,20 @@
+FROM node:19-alpine
+
+ADD . /app
+
+WORKDIR /app
+
+COPY package*.json ./
+
+ARG DATABASE_URL
+ARG BCRYPT_SALT_ROUNDS
+
+ENV DATABASE_URL=$DATABASE_URL
+ENV BCRYPT_SALT_ROUNDS=$BCRYPT_SALT_ROUNDS
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 5000
+CMD ["npm", "start"]
