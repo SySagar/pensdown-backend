@@ -1,5 +1,4 @@
 import User from "../schema/user";
-import Blogs from "../schema/blog";
 
 interface UserType {
   name: string;
@@ -25,9 +24,9 @@ export const searchUserByEmail = async (email: string) => {
     try {
         const user = await User.findOne({email: email})
         if(user)
-        return true;
+        return user;
         else
-        return false;
+        return null;
     } catch (error) {
         console.log(error)
     }
