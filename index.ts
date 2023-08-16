@@ -31,6 +31,7 @@ DBConnect();
 app.use("/", appRoutes.welcomeRoutes);
 app.use("/auth", appRoutes.authRoutes);
 app.use("/verify", appRoutes.verifyRoutes);
+app.use("/blog", appRoutes.blogRoutes);
 
 app.listen(5000, () => {
   console.log("🚀 Server is running on port 5000");
