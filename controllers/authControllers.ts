@@ -56,7 +56,7 @@ export const loginUser = async (req: any, res: any) => {
     if (isPasswordMatch) {
       console.log("user logged in");
       const token = generateAccessToken({ userEmail: email });
-      res.json({ message: "user logged in", status: 200, token: token });
+      res.json({ message: "user logged in", status: 200, user:user,token:token });
 
     } else res.json({ message: "Wrong credentials", status: 401 });
   }

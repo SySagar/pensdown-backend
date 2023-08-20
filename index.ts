@@ -4,9 +4,6 @@ import DBConnect from "./config/db";
 import appRoutes from "./routes/index";
 
 const app = express();
-app.use(cors());
-app.use(express.json());
-
 const whitelist = [
     "http://localhost:5173"
   ];
@@ -23,6 +20,7 @@ const whitelist = [
       },
     })
   );
+  app.use(express.json());
 
 //connect to database
 DBConnect();

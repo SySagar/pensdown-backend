@@ -1,6 +1,7 @@
 import Blog from "../schema/blog";
 import {saveBlogToDB,deleteBlogFromDB} from '../repository/blog';
 import moment from 'moment';
+import {searchUserByEmail} from '../repository/auth'
 
 interface jsonResTypes {
     message: string;
@@ -10,26 +11,25 @@ interface jsonResTypes {
 interface blogTypes {
   title: string;
   description: string;
-  body: string;
-  author: string;
+  content: string;
+  id: string;
   date: String;
   authorName: String;
   likes: Number;
 }
 
 export const createBlog = async (req: any, res: any) => {
-  const { title, description, body,author,authorName} =
+  const { title, content,id,authorName} =
     req.body as unknown as blogTypes;
 
     const date = moment().format("dddd, MMMM Do") as unknown as String;
     const user = req.user;
-    // const authorID = user._id as unknown as String;
+
   try {
     const blog = new Blog({
       title,
-      description,
-      body,
-      author,
+      content,
+      author:id,
       authorName,
       date,
       likes:10  
