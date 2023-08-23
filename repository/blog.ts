@@ -21,3 +21,13 @@ export const deleteBlogFromDB = async (blog_id:Number)=>{
         return false;
     }
 }
+
+export const getAllBlogsFromDB = async ()=>{
+    try {
+        const blogs = await blog.find();
+        return blogs;
+    } catch (error) {
+        console.log("error");
+        return false;
+    }
+}

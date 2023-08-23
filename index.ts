@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import DBConnect from "./config/db";
 import appRoutes from "./routes/index";
+import verifyToken from "./middleware/verifyToken";
 
 const app = express();
 const whitelist = [
@@ -21,6 +22,7 @@ const whitelist = [
     })
   );
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
 //connect to database
 DBConnect();

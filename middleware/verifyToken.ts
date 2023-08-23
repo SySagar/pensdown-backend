@@ -1,19 +1,10 @@
-import jwt from "jsonwebtoken";
-
-interface verificationType {
-    req: any;
-    res: any;
-    next: any;
-    token: string;
-  }
-  
-
-export const verifyToken = (req:any, res:any,token:any,next:any) => {
-  console.log("req",req)
-  console.log("random shit")
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err : any, user : any) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-};
+export default function verifyToken(req:any, res:any, next:any){
+    const bearerHeader = req.headers['authorization'];
+    if(typeof bearerHeader !== 'undefined'){
+        const bearerToken = bearerHeader.split(' ')[1];
+        req.token = bearerToken;
+        next();
+    }else{
+        res.sendStatus(403);
+    }
+}

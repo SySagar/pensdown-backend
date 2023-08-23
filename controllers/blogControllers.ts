@@ -1,26 +1,12 @@
 import Blog from "../schema/blog";
-import {saveBlogToDB,deleteBlogFromDB} from '../repository/blog';
+import {saveBlogToDB,deleteBlogFromDB,getAllBlogsFromDB} from '../repository/blog';
 import moment from 'moment';
 import {searchUserByEmail} from '../repository/auth'
-
-interface jsonResTypes {
-    message: string;
-    status: number;
-}
-
-interface blogTypes {
-  title: string;
-  description: string;
-  content: string;
-  id: string;
-  date: String;
-  authorName: String;
-  likes: Number;
-}
+import {blogTypes,jsonResTypes,getBlogjsonResTypes} from "./types/blogTypes";
+import {sortblogsByDate} from "../utils/sort";
 
 export const createBlog = async (req: any, res: any) => {
-  const { title, content,id,authorName} =
-    req.body as unknown as blogTypes;
+  const { title, content,authorID,authorName,coverImage} = req.body as unknown as blogTypes;
 
     const date = moment().format("dddd, MMMM Do") as unknown as String;
     const user = req.user;
@@ -29,10 +15,11 @@ export const createBlog = async (req: any, res: any) => {
     const blog = new Blog({
       title,
       content,
-      author:id,
+      authorID,
       authorName,
       date,
-      likes:10  
+      likes:10  ,
+      coverImageURL:coverImage
     });
 
     const jsonRes = {} as jsonResTypes;
@@ -80,6 +67,32 @@ export const deleteBlog = async (req:any,res:any)=>{
         res.json({
             error: error.message,
             message: "Error in deleting blog",
+            status: 500,
+          });
+    }
+}
+
+
+export const getAllBlogs = async (req:any,res:any)=>{
+    try {
+        const blogs = await getAllBlogsFromDB();
+        const jsonRes = {} as getBlogjsonResTypes;
+        if (!blogs || blogs==null) {
+            jsonRes["message"] = "Unable to fetch blogs";
+            jsonRes["status"] = 409;
+        }
+        else
+        {
+            jsonRes["message"] = "Blogs fetched successfully";
+            jsonRes["status"] = 200;
+            jsonRes["blogs"] = sortblogsByDate(blogs);
+        }
+    
+        res.json(jsonRes);
+    } catch (error:any) {
+        res.json({
+            error: error.message,
+            message: "Error in fetching blogs",
             status: 500,
           });
     }

@@ -9,7 +9,8 @@ const Blog = new mongoose.Schema({
   content: String,
   authorName: String,
   likes: Number,
-  author: {
+  coverImageURL: String,
+  authorID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
