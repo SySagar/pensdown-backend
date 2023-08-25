@@ -6,9 +6,14 @@ import {blogTypes,jsonResTypes,getBlogjsonResTypes} from "./types/blogTypes";
 import {sortblogsByDate} from "../utils/sort";
 
 export const createBlog = async (req: any, res: any) => {
-  const { title, content,authorID,authorName,coverImage} = req.body as unknown as blogTypes;
+  let { title, content,authorID,authorName,coverImage} = req.body as unknown as blogTypes;
   console.log('authorID',req.body);
     const date = moment().format("dddd, MMMM Do") as unknown as String;
+
+    if(title==null || title==undefined || title=="")
+    {
+      title="blog";
+    }
 
   try {
     const blog = new Blog({
@@ -98,9 +103,9 @@ export const getAllBlogs = async (req:any,res:any)=>{
 }
 
 export const getSingleBlog = async (req:any,res:any)=>{
-  const {blogID} = req.body;
+  const {blogId} = req.body;
   try {
-    const blog = await Blog.findById(blogID);
+    const blog = await Blog.findById(blogId);
     const jsonRes = {} as getBlogjsonResTypes;
     if (!blog || blog==null) {
         jsonRes["message"] = "Unable to fetch blog";
