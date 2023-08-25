@@ -1,9 +1,15 @@
 import blog from "../schema/blog";
+import User from "../schema/user";
 
-export const saveBlogToDB = async (blog: any) => {
+export const saveBlogToDB = async (blog: any,authorID:any) => {
   try {
-    console.log(blog);
     await blog.save();
+
+    await User.updateOne(
+      { _id: authorID },
+      { $push: { blogs: blog._id } }
+    )
+
     return true;
   } catch (error) {
     console.log(error);

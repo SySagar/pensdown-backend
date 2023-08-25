@@ -7,9 +7,9 @@ interface isVerified {
 
 export const verifyTokenController = async (req:any,res:any) => {
     try {
-        console.log("verifyTokenController");
+        // console.log("verifyTokenController");
 
-       res.json({ message: "success", status: 401 });
+       res.json({ message: "success", status: 200 });
 
     }
     catch (err:any) {

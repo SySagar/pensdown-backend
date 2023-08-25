@@ -7,9 +7,8 @@ import {sortblogsByDate} from "../utils/sort";
 
 export const createBlog = async (req: any, res: any) => {
   const { title, content,authorID,authorName,coverImage} = req.body as unknown as blogTypes;
-
+  console.log('authorID',req.body);
     const date = moment().format("dddd, MMMM Do") as unknown as String;
-    const user = req.user;
 
   try {
     const blog = new Blog({
@@ -23,7 +22,7 @@ export const createBlog = async (req: any, res: any) => {
     });
 
     const jsonRes = {} as jsonResTypes;
-    const isSavedToDB = await saveBlogToDB(blog)
+    const isSavedToDB = await saveBlogToDB(blog,authorID)
     
 
     if (!isSavedToDB) {
@@ -95,5 +94,60 @@ export const getAllBlogs = async (req:any,res:any)=>{
             message: "Error in fetching blogs",
             status: 500,
           });
+    }
+}
+
+export const getSingleBlog = async (req:any,res:any)=>{
+  const {blogID} = req.body;
+  try {
+    const blog = await Blog.findById(blogID);
+    const jsonRes = {} as getBlogjsonResTypes;
+    if (!blog || blog==null) {
+        jsonRes["message"] = "Unable to fetch blog";
+        jsonRes["status"] = 401;
+    }
+    else
+    {
+        jsonRes["message"] = "Blog fetched successfully";
+        jsonRes["status"] = 200;
+        jsonRes["blogs"] = blog;
+    }
+
+    res.json(jsonRes);
+} catch (error:any) {
+    res.json({
+        error: error.message,
+        message: "Error in fetching blog",
+        status: 500,
+      });
+
+    }
+}
+
+export const getUserBlogs = async (req:any,res:any)=>{
+  const {email} = req.body;
+  console.log('email',email);
+  try {
+    const user = await searchUserByEmail(email);
+    const jsonRes = {} as getBlogjsonResTypes;
+    if (!user || user==null) {
+        jsonRes["message"] = "Unable to fetch blogs";
+        jsonRes["status"] = 401;
+    }
+    else
+    {
+        jsonRes["message"] = "Blogs fetched successfully";
+        jsonRes["status"] = 200;
+        jsonRes["blogs"] = user.blogs;
+    }
+
+    res.json(jsonRes);
+} catch (error:any) {
+    res.json({
+        error: error.message,
+        message: "Error in fetching blogs",
+        status: 500,
+      });
+
     }
 }
