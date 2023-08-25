@@ -6,7 +6,7 @@ interface userType {
   
 const generateAccessToken = (user: userType) => {
   try{
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: "3600s" });
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: "7200s" });
     return accessToken;
   }
   catch(err){

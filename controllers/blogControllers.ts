@@ -4,6 +4,7 @@ import moment from 'moment';
 import {searchUserByEmail} from '../repository/auth'
 import {blogTypes,jsonResTypes,getBlogjsonResTypes} from "./types/blogTypes";
 import {sortblogsByDate} from "../utils/sort";
+import user from "../schema/user";
 
 export const createBlog = async (req: any, res: any) => {
   let { title, content,authorID,authorName,coverImage} = req.body as unknown as blogTypes;
@@ -22,7 +23,8 @@ export const createBlog = async (req: any, res: any) => {
       authorID,
       authorName,
       date,
-      likes:10  ,
+      likes:[],
+      commments:[],
       coverImageURL:coverImage
     });
 
@@ -155,4 +157,53 @@ export const getUserBlogs = async (req:any,res:any)=>{
       });
 
     }
+}
+
+export const likeBlog = async (req:any,res:any)=>{
+  // const {blogId} = req.body;
+  console.log('userEmail',req.body);
+  const blogId = req.params.postId;
+  // console.log('user',req.user)
+  const userEmail = req.body.userId;
+  console.log('blogid',blogId);
+  try {
+    
+    const singleBlog = await Blog.findById(blogId);
+    if (!singleBlog) {
+      return res.status(404).json({ message: 'blog not found' });
+    }
+    // const userIndex = singleBlog.likes.findIndex(userEmail);
+    
+    const userLiked = singleBlog.likes.some(like => like === userEmail);
+    console.log('userLiked',userLiked);
+
+    // if (userIndex !== -1) {
+    //   // Unlike: Remove the like from the post and save
+    //   singleBlog.likes.splice(userIndex, 1);
+    //   await singleBlog.save();
+    //   res.status(200).json({ message: 'Post unliked successfully' });
+    // } else {
+    //   // Like: Add the like to the post and save
+    //   singleBlog.likes.push(userEmail);
+    //   await singleBlog.save();
+    //   res.status(200).json({ message: 'Post liked successfully' });
+    // }
+
+    if (userLiked) {
+      // Unlike: Remove the like from the post and save
+      singleBlog.likes = singleBlog.likes.filter(like => like !== userEmail);
+      await singleBlog.save();
+      res.status(200).json({ message: 'Post unliked successfully' });
+    } else {
+      // Like: Add the like to the post and save
+      singleBlog.likes.push(userEmail);
+      await singleBlog.save();
+      res.status(200).json({ message: 'Post liked successfully' });
+    }
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+
 }

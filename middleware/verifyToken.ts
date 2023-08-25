@@ -12,10 +12,9 @@ export default async function verifyToken(req:any, res:any, next:any){
     if(typeof bearerHeader !== 'undefined'){
         const bearerToken = bearerHeader.split(' ')[1];
         const isValidToken = await validateToken(bearerToken) as unknown as isVerified;
-        console.log('isValidToken',isValidToken);
         if(isValidToken.status==200)
         {req.token = bearerToken;
-         req.user = isValidToken.user;
+            req.user = isValidToken.user;
             next();
         }
         else
