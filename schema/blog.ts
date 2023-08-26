@@ -9,7 +9,7 @@ const Blog = new mongoose.Schema({
   content: String,
   authorName: String,
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   coverImageURL: String,
   authorID: {
     type: mongoose.Schema.Types.ObjectId,

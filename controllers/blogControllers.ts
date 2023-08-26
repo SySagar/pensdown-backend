@@ -4,7 +4,7 @@ import moment from 'moment';
 import {searchUserByEmail} from '../repository/auth'
 import {blogTypes,jsonResTypes,getBlogjsonResTypes} from "./types/blogTypes";
 import {sortblogsByDate} from "../utils/sort";
-import user from "../schema/user";
+import Comment from "../schema/Comment";
 
 export const createBlog = async (req: any, res: any) => {
   let { title, content,authorID,authorName,coverImage} = req.body as unknown as blogTypes;
@@ -161,11 +161,9 @@ export const getUserBlogs = async (req:any,res:any)=>{
 
 export const likeBlog = async (req:any,res:any)=>{
   // const {blogId} = req.body;
-  console.log('userEmail',req.body);
   const blogId = req.params.postId;
   // console.log('user',req.user)
-  const userEmail = req.body.userId;
-  console.log('blogid',blogId);
+  const userId = req.body.userId;
   try {
     
     const singleBlog = await Blog.findById(blogId);
@@ -174,8 +172,7 @@ export const likeBlog = async (req:any,res:any)=>{
     }
     // const userIndex = singleBlog.likes.findIndex(userEmail);
     
-    const userLiked = singleBlog.likes.some(like => like === userEmail);
-    console.log('userLiked',userLiked);
+    const userLiked = singleBlog.likes.some(like => {return like.toString() == userId});
 
     // if (userIndex !== -1) {
     //   // Unlike: Remove the like from the post and save
@@ -191,12 +188,12 @@ export const likeBlog = async (req:any,res:any)=>{
 
     if (userLiked) {
       // Unlike: Remove the like from the post and save
-      singleBlog.likes = singleBlog.likes.filter(like => like !== userEmail);
+      singleBlog.likes = singleBlog.likes.filter(like => {return like !== userId});
       await singleBlog.save();
       res.status(200).json({ message: 'Post unliked successfully' });
     } else {
       // Like: Add the like to the post and save
-      singleBlog.likes.push(userEmail);
+      singleBlog.likes.push(userId);
       await singleBlog.save();
       res.status(200).json({ message: 'Post liked successfully' });
     }
@@ -204,6 +201,43 @@ export const likeBlog = async (req:any,res:any)=>{
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
+  }
+
+}
+
+export const commentOnBlog = async (req:any,res:any)=>{
+  try {
+    
+
+  const {comment,authorId} = req.body;
+  const blogId = req.params.postId;
+
+  const newComment = new Comment({ comment, authorId, blogId , createdAt: new Date() });
+  console.log('newComment',newComment);
+  const savedComment = await newComment.save();
+  res.status(201).json(savedComment);
+} catch (error) {
+    console.error(error);
+}
+}
+
+export const getCommentsForPost = async (req:any,res:any)=>{
+
+  try {
+    const blogId = req.params.blogId;
+    console.log('blogId',blogId);
+
+    const comments = await Comment.find({ blog: blogId }).lean().populate('authorId');
+
+    const formattedComments = comments.map(comment => ({
+      ...comment,
+      createdAt: moment(comment.createdAt).fromNow(), // Format the timestamp as "x minutes/hours/days ago"
+    }));
+
+    res.status(200).json(formattedComments);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching comments' });
   }
 
 }
