@@ -4,6 +4,6 @@ import {publishNotification,subscribeNotification} from '../controllers/notifica
 const router = express.Router();
 
 router.post('/send', publishNotification);
-router.get('/get', subscribeNotification);
+router.post('/get', subscribeNotification);
 
 export default router;

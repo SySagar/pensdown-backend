@@ -33,6 +33,7 @@ app.use("/auth", appRoutes.authRoutes);
 app.use("/verify", appRoutes.verifyRoutes);
 app.use("/blog", appRoutes.blogRoutes);
 app.use("/notifications", appRoutes.notificationRoutes);
+app.use("/user", appRoutes.userRoutes);
 
 app.listen(5000, () => {
   console.log("🚀 Server is running on port 5000");

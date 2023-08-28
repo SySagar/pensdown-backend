@@ -8,6 +8,10 @@ const User = new mongoose.Schema({
     min: 3,
     max: 30,
   },
+  bio:{
+    type: String,
+    trim: true,
+  },
   displayName: {
     type: String,
     trim: true,
@@ -28,6 +32,8 @@ const User = new mongoose.Schema({
       ref: "Blog",
     },
   ],
+  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 });
 
 export default mongoose.model('User',User);

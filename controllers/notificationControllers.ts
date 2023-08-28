@@ -3,7 +3,7 @@ import { connect } from "amqplib";
 export const publishNotification = async (req:any,res:any) => {
   try {
     const userId = req.body.userId;
-    const queueMessage = req.body.queueMessage;
+    const queueMessage = req.body.message;
 
     const connection = await connect(process.env.CLOUDAMQP_URL as string);
     const channel = await connection.createChannel();
@@ -35,7 +35,8 @@ export const publishNotification = async (req:any,res:any) => {
 
 export const subscribeNotification = async (req:any,res:any) => {
     try {
-      const notificationQueue = req.body.notificationQueueID;
+      const notificationQueue = req.body.userId;
+        console.log("notificationQueue",notificationQueue)
       const connection = await connect(process.env.CLOUDAMQP_URL as string);
       const channel = await connection.createChannel();
 
