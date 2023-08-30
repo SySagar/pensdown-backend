@@ -1,6 +1,9 @@
 import User from '../schema/user';
 
 export async function followUser(req:any, res:any) {
+
+  console.log('req.body',req.body)  
+
     const userId = req.params.userId;
     const loggedInUserId = req.body.id; // Get logged-in user's ID from authentication middleware
   
@@ -17,9 +20,20 @@ export async function followUser(req:any, res:any) {
         userToFollow.followers.push(loggedInUserId);
         await loggedInUser.save();
         await userToFollow.save();
+        res.json({ message: 'User followed successfully',followStatus:'following' });
+      }
+      else
+       // Check if the logged-in user is following the target user
+       if (loggedInUser.following.includes(userId)) {
+        // Remove the target user from the following list of the logged-in user
+        loggedInUser.following = loggedInUser.following.filter(id => id.toString() !== userId);
+        // Remove the logged-in user from the followers list of the target user
+        userToFollow.followers = userToFollow.followers.filter(id => id.toString() !== loggedInUserId);
+        await loggedInUser.save();
+        await userToFollow.save();
+        res.json({ message: 'User unfollowed successfully',followStatus:'unfollowing' });
       }
   
-      res.json({ message: 'User followed successfully' });
     } catch (error) {
       console.error('Error following user:', error);
       res.status(500).json({ message: 'Internal server error' });
