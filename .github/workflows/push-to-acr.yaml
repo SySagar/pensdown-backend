@@ -24,3 +24,9 @@ jobs:
 
     - name: Push Docker image
       run: docker push ${{ secrets.REGISTRY_NAME }}.azurecr.io/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: pensdown-service
+        images: pensdowncontainerregistry.azurecr.io/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
