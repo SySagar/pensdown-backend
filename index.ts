@@ -7,7 +7,7 @@ import verifyToken from "./middleware/verifyToken";
 const app = express();
 const whitelist = [
     "http://localhost:5173",
-    "https://pensdown.vercel.app/"
+    "https://pensdown.vercel.app"
   ];
   app.use(
     cors({
