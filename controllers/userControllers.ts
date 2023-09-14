@@ -1,4 +1,6 @@
 import User from '../schema/user';
+import {searchUserByEmail} from '../repository/user'
+import {userInfoType} from './types/userTypes'
 
 export async function followUser(req:any, res:any) {
 
@@ -68,3 +70,25 @@ export async function followUser(req:any, res:any) {
       res.status(500).json({ message: 'Internal server error' });
     }
   }
+
+export async function getAuthorInfo(req:any,res:any){
+  const userId = req.params.userId;
+  console.log('userId',userId)
+  try{
+    await searchUserByEmail(userId).then((user:any)=>{
+      if(user){
+        const {name,displayName,bio,followers,respect,blogs} : userInfoType = user
+        var blogsCount= blogs.length
+        var followersCount = followers.length
+        res.json({name,displayName,bio,followersCount,respect,blogsCount})
+      }
+      else{
+        res.json({message:'User not found'})
+      }
+    })
+
+  }catch(error){
+    console.error('Error getting author info:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}

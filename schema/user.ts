@@ -8,6 +8,10 @@ const User = new mongoose.Schema({
     min: 3,
     max: 30,
   },
+  respect: {
+    type: Number,
+    default: 0,
+  },
   bio:{
     type: String,
     trim: true,
