@@ -1,6 +1,6 @@
 import User from "../schema/user";
 
-export const searchUserByEmail = async (id: string) => {
+export const searchUserById = async (id: string) => {
     try {
         const user = await User.findOne({
             _id: id

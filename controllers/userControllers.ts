@@ -1,5 +1,5 @@
 import User from '../schema/user';
-import {searchUserByEmail} from '../repository/user'
+import {searchUserById} from '../repository/user'
 import {userInfoType} from './types/userTypes'
 
 export async function followUser(req:any, res:any) {
@@ -75,12 +75,12 @@ export async function getAuthorInfo(req:any,res:any){
   const userId = req.params.userId;
   console.log('userId',userId)
   try{
-    await searchUserByEmail(userId).then((user:any)=>{
+    await searchUserById(userId).then((user:any)=>{
       if(user){
         const {name,displayName,bio,followers,respect,blogs} : userInfoType = user
         var blogsCount= blogs.length
         var followersCount = followers.length
-        res.json({name,displayName,bio,followersCount,respect,blogsCount})
+        res.json({name,displayName,bio,followersCount,respect,blogsCount,blogs})
       }
       else{
         res.json({message:'User not found'})

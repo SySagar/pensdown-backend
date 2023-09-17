@@ -1,5 +1,5 @@
 import Blog from "../schema/blog";
-import {saveBlogToDB,deleteBlogFromDB,getAllBlogsFromDB} from '../repository/blog';
+import {saveBlogToDB,deleteBlogFromDB,getAllBlogsFromDB,getAllUserBlogsFromDB} from '../repository/blog';
 import moment from 'moment';
 import {searchUserByEmail} from '../repository/auth'
 import {blogTypes,jsonResTypes,getBlogjsonResTypes} from "./types/blogTypes";
@@ -159,6 +159,35 @@ export const getUserBlogs = async (req:any,res:any)=>{
     }
 }
 
+export const getUserBlogByUserId = async (req:any,res:any)=>{
+  const {authorId} = req.body;
+  console.log('user ID',authorId);
+  try {
+    const userBlogs = await getAllUserBlogsFromDB(authorId);
+    // console.log('userBlogs',userBlogs);
+    const jsonRes = {} as getBlogjsonResTypes;
+    if (!userBlogs || userBlogs==null) {
+        jsonRes["message"] = "Unable to fetch blogs";
+        jsonRes["status"] = 401;
+    }
+    else
+    {
+        jsonRes["message"] = "Blogs fetched successfully";
+        jsonRes["status"] = 200;
+        jsonRes["blogs"] = userBlogs;
+    }
+
+    res.json(jsonRes);
+} catch (error:any) {
+    res.json({
+        error: error.message,
+        message: "Error in fetching blogs",
+        status: 500,
+      });
+
+    }
+}
+
 export const likeBlog = async (req:any,res:any)=>{
   // const {blogId} = req.body;
   const blogId = req.params.postId;
@@ -212,9 +241,16 @@ export const commentOnBlog = async (req:any,res:any)=>{
   const {comment,authorId} = req.body;
   const blogId = req.params.postId;
 
+  const singleBlog = await Blog.findById(blogId);
+  if (!singleBlog) {
+    return res.status(404).json({ message: 'blog not found' });
+  }
+
   const newComment = new Comment({ comment, authorId, blogId , createdAt: new Date() });
   console.log('newComment',newComment);
   const savedComment = await newComment.save();
+  singleBlog.comments.push(authorId);
+  await singleBlog.save();
   res.status(201).json(savedComment);
 } catch (error) {
     console.error(error);

@@ -32,8 +32,14 @@ const User = new mongoose.Schema({
   },
   blogs: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Blog",
+      blogId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Blog',
+      },
+      title: {
+        type: mongoose.Schema.Types.String,
+        ref: 'Blog',
+      },
     },
   ],
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

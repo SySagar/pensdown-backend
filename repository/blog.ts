@@ -7,7 +7,7 @@ export const saveBlogToDB = async (blog: any,authorID:any) => {
 
     await User.updateOne(
       { _id: authorID },
-      { $push: { blogs: blog._id } }
+      { $push: { blogs: blog} }
     )
 
     return true;
@@ -31,6 +31,16 @@ export const deleteBlogFromDB = async (blog_id:Number)=>{
 export const getAllBlogsFromDB = async ()=>{
     try {
         const blogs = await blog.find();
+        return blogs;
+    } catch (error) {
+        console.log("error");
+        return false;
+    }
+}
+
+export const getAllUserBlogsFromDB = async (authorID:any)=>{
+    try {
+        const blogs = await blog.find({authorID:authorID});
         return blogs;
     } catch (error) {
         console.log("error");

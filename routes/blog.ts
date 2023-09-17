@@ -5,6 +5,7 @@ import {
   getAllBlogs,
   getSingleBlog,
   getUserBlogs,
+  getUserBlogByUserId,
   likeBlog,
   commentOnBlog,
   getCommentsForPost
@@ -18,6 +19,7 @@ router.post("/delete", verifyToken, deleteBlog);
 router.get("/getAll", getAllBlogs);
 router.post("/getBlog", getSingleBlog);
 router.post("/getUserBlogs", getUserBlogs);
+router.post("/getUserBlogsByUserId", getUserBlogByUserId);
 router.post("/:postId", verifyToken, likeBlog);
 router.post("/comment/:postId", verifyToken, commentOnBlog);
 router.get("/comments/:postId",  getCommentsForPost);
