@@ -6,8 +6,8 @@ import verifyToken from "./middleware/verifyToken";
 
 const app = express();
 const whitelist = [
-    "https://pensdown-dad2d.firebaseapp.com/",
-    "https://pensdown-dad2d.web.app/",
+    "https://pensdown-dad2d.firebaseapp.com",
+    "https://pensdown-dad2d.web.app",
     "http://localhost:5173",
     "https://pensdown.vercel.app"
   ];
