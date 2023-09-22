@@ -190,7 +190,7 @@ export const getUserBlogByUserId = async (req:any,res:any)=>{
 
 export const likeBlog = async (req:any,res:any)=>{
   // const {blogId} = req.body;
-  const blogId = req.params.postId;
+  const blogId = req.params.blogId;
   // console.log('user',req.user)
   const userId = req.body.userId;
   try {
@@ -202,7 +202,6 @@ export const likeBlog = async (req:any,res:any)=>{
     // const userIndex = singleBlog.likes.findIndex(userEmail);
     
     const userLiked = singleBlog.likes.some(like => {return like.toString() == userId});
-
     // if (userIndex !== -1) {
     //   // Unlike: Remove the like from the post and save
     //   singleBlog.likes.splice(userIndex, 1);
@@ -217,14 +216,14 @@ export const likeBlog = async (req:any,res:any)=>{
 
     if (userLiked) {
       // Unlike: Remove the like from the post and save
-      singleBlog.likes = singleBlog.likes.filter(like => {return like !== userId});
+      singleBlog.likes = singleBlog.likes.filter(like => {return like != userId});
       await singleBlog.save();
-      res.status(200).json({ message: 'Post unliked successfully' });
+      return res.status(200).json({ message: 'Post unliked successfully' });
     } else {
       // Like: Add the like to the post and save
       singleBlog.likes.push(userId);
       await singleBlog.save();
-      res.status(200).json({ message: 'Post liked successfully' });
+      return res.status(200).json({ message: 'Post liked successfully' });
     }
 
   } catch (error) {
