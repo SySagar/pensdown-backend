@@ -22,5 +22,5 @@ router.post("/getUserBlogs", getUserBlogs);
 router.post("/getUserBlogsByUserId", getUserBlogByUserId);
 router.post("/:blogId", verifyToken, likeBlog);
 router.post("/comment/:blogId", verifyToken, commentOnBlog);
-router.get("/comments/:postId",  getCommentsForPost);
+router.get("/comments/:blogId",  getCommentsForPost);
 export default router;

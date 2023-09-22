@@ -236,9 +236,8 @@ export const likeBlog = async (req:any,res:any)=>{
 export const commentOnBlog = async (req:any,res:any)=>{
   try {
     
-
   const {comment,authorId} = req.body;
-  const blogId = req.params.postId;
+  const blogId = req.params.blogId;
 
   const singleBlog = await Blog.findById(blogId);
   if (!singleBlog) {
@@ -262,12 +261,14 @@ export const getCommentsForPost = async (req:any,res:any)=>{
     const blogId = req.params.blogId;
     console.log('blogId',blogId);
 
-    const comments = await Comment.find({ blog: blogId }).lean().populate('authorId');
+    const comments = await Comment.find({ blogId: blogId }).lean().populate('authorId');
 
     const formattedComments = comments.map(comment => ({
       ...comment,
       createdAt: moment(comment.createdAt).fromNow(), // Format the timestamp as "x minutes/hours/days ago"
     }));
+
+    console.log('formattedComments',formattedComments);
 
     res.status(200).json(formattedComments);
   } catch (error) {
