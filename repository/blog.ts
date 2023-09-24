@@ -28,6 +28,16 @@ export const deleteBlogFromDB = async (blog_id:Number)=>{
     }
 }
 
+export const getBlogByTag = async (tag:String)=>{
+    try {
+        const blogs = await blog.find({ tags: { $in: [tag] } });
+        return blogs;
+    } catch (error) {
+        console.log("error");
+        return false;
+    }
+}
+
 export const getAllBlogsFromDB = async ()=>{
     try {
         const blogs = await blog.find();

@@ -1,5 +1,5 @@
 import Blog from "../schema/blog";
-import {saveBlogToDB,deleteBlogFromDB,getAllBlogsFromDB,getAllUserBlogsFromDB} from '../repository/blog';
+import {saveBlogToDB,deleteBlogFromDB,getAllBlogsFromDB,getAllUserBlogsFromDB,getBlogByTag} from '../repository/blog';
 import moment from 'moment';
 import {searchUserByEmail} from '../repository/auth'
 import {blogTypes,jsonResTypes,getBlogjsonResTypes} from "./types/blogTypes";
@@ -7,7 +7,7 @@ import {sortblogsByDate} from "../utils/sort";
 import Comment from "../schema/Comment";
 
 export const createBlog = async (req: any, res: any) => {
-  let { title, content,authorID,authorName,coverImage} = req.body as unknown as blogTypes;
+  let { title, content,authorID,authorName,coverImage,tags} = req.body as unknown as blogTypes;
   console.log('authorID',req.body);
     const date = moment().format("dddd, MMMM Do") as unknown as String;
 
@@ -23,6 +23,7 @@ export const createBlog = async (req: any, res: any) => {
       authorID,
       authorName,
       date,
+      tags,
       likes:[],
       commments:[],
       coverImageURL:coverImage
@@ -129,6 +130,29 @@ export const getSingleBlog = async (req:any,res:any)=>{
       });
 
     }
+}
+
+export const getSingleBlogByTag = async (req:any,res:any)=>{
+  const {tag} =req.body;
+  try {
+    const associatedBlogs = await getBlogByTag(tag);
+    // console.log('associatedBlogs',associatedBlogs);
+    const jsonRes = {} as getBlogjsonResTypes;
+    if (!associatedBlogs || associatedBlogs==null) {
+        jsonRes["message"] = "Unable to fetch blogs";
+        jsonRes["status"] = 401;
+    }
+    else
+    {
+        jsonRes["message"] = "Blogs fetched successfully";
+        jsonRes["status"] = 200;
+        jsonRes["blogs"] = associatedBlogs;
+    }
+
+    return res.json(jsonRes);
+  } catch (error:any) {
+    console.log('error',error);
+  }
 }
 
 export const getUserBlogs = async (req:any,res:any)=>{

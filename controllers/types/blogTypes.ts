@@ -7,6 +7,7 @@ export interface blogTypes {
     date: String;
     authorName: String;
     likes: Number;
+    tags: Array<String>;
   }
 
  export interface jsonResTypes {
