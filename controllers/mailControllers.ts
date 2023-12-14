@@ -2,7 +2,8 @@ import nodemailer from 'nodemailer';
 
 export const sendMail = async (req: any, res: any) => {
 
-    const {senderMail, text} = req.body
+    const {senderEmail, text} = req.body
+    
     let flag=false;
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -16,7 +17,7 @@ export const sendMail = async (req: any, res: any) => {
 
     try {
         transporter.sendMail({
-            from: senderMail, 
+            from: senderEmail, 
             to: 'sysagar07@gmail.com', 
             subject: 'From Pensdown', 
             text: text, 
