@@ -12,7 +12,10 @@ interface User {
 }
 
 export const registerUser = async (req: any, res: any) => {
-  const { email, password }: any = req.body;
+
+  console.log(req.body)
+
+  const { email, password,tags }: any = req.body;
   const {name,username,bio}:any = req.body.profile
   const displayName = username || name
 
@@ -24,6 +27,7 @@ export const registerUser = async (req: any, res: any) => {
     email,
     hashedPassword,
     blogs: [],
+    tags:tags
   } as User;
 
   const isUserExists = await searchUserByEmail(email);

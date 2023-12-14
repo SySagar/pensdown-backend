@@ -16,6 +16,10 @@ const User = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  tags: {
+    type: Array,
+    default: [],
+  },
   displayName: {
     type: String,
     trim: true,

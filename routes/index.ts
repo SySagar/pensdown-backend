@@ -4,6 +4,7 @@ import verifyRoutes from './verify'
 import blogRoutes from './blog'
 import notificationRoutes from './notifications'
 import userRoutes from './user'
+import mailRoutes from './mail'
 
 export default {
     authRoutes,
@@ -11,5 +12,6 @@ export default {
     verifyRoutes,
     blogRoutes,
     notificationRoutes,
-    userRoutes
+    userRoutes,
+    mailRoutes
 }
