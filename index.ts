@@ -39,6 +39,8 @@ app.use("/notifications", appRoutes.notificationRoutes);
 app.use("/user", appRoutes.userRoutes);
 app.use('/mail',appRoutes.mailRoutes)
 
-app.listen(5000, () => {
+const server = app.listen(5000, () => {
   console.log("🚀 Server is running on port 5000");
 });
+
+export default server;
