@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon index.ts",
     "start": "ts-node index.ts",
-    "test": "mocha --require @babel/register --exit --timeout 300000  \"tests/**/*.test.js\""
+    "test": "mocha -r ts-node/register  -r tsconfig-paths/register --esm  --timeout 60000 --exit"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +25,8 @@
     "node-cron": "^3.0.2",
     "nodemailer": "^6.9.7",
     "redis": "^4.6.8",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.4",
@@ -34,16 +36,18 @@
     "@babel/register": "^7.23.7",
     "@types/amqplib": "^0.10.1",
     "@types/bcrypt": "^5.0.0",
+    "@types/chai": "^4.3.11",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/mocha": "^10.0.6",
     "@types/node-cron": "^3.0.8",
     "@types/nodemailer": "^6.4.14",
     "@types/redis": "^4.0.11",
-    "chai": "^5.0.0",
+    "chai": "^5.1.0",
     "chai-http": "^4.4.0",
     "esm": "^3.2.25",
-    "mocha": "^10.2.0",
+    "mocha": "^10.3.0",
     "nodemon": "^3.0.1"
   }
 }
