@@ -1,5 +1,4 @@
-import { expect, test, assert } from 'vitest'
-import server from '..';
+import { expect, test } from 'vitest';
 import fetch from 'node-fetch';
 
 test('Welcome 200 ok',async ()=>{
