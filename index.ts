@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import morgan from "morgan";
 import DBConnect from "./config/db";
 import appRoutes from "./routes/index";
 
@@ -24,6 +25,7 @@ const whitelist = [
       },
     })
   );
+  app.use(morgan("dev"));
   app.use(express.json({limit: '50mb'}));
   app.use(express.urlencoded({limit: '50mb', extended: true}));
 

@@ -1,17 +1,10 @@
-import { expect, use,request } from 'chai';
-import {describe, it} from 'mocha';
-import chaiHttp from 'chai-http';
-import server from '../index';
+import { expect, test, assert } from 'vitest'
+import server from '..';
+import fetch from 'node-fetch';
 
-use(chaiHttp);
+test('Welcome 200 ok',async ()=>{
 
-describe('welcome routes', function () {
-    it('welcome routes functional', (done: Mocha.Done) => {
-        request(server)
-            .get('/welcome')
-            .end((err, res) => {
-                expect(res).to.have.status(200);
-                done();
-            });
-    });
-});
+    const response = await fetch('http://localhost:5000/');
+    expect(response.status).toBe(200);
+
+})
