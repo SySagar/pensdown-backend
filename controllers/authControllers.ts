@@ -1,6 +1,7 @@
 import {createUser,searchUserByEmail} from "../repository/auth";
 import { hashPassword,comparePasswords } from "../utils/bycrypt";
 import { generateAccessToken } from "../utils/generateToken";
+import { passwordValidator } from "../utils/isPasswordValid";
 
 interface User {
   name: string;
@@ -19,6 +20,14 @@ export const registerUser = async (req: any, res: any) => {
   const {name,username,bio}:any = req.body.profile
   const displayName = username || name
 
+  const isPasswordValid = passwordValidator(password);
+
+  if (!isPasswordValid) {
+    res.send({
+      message: "password must be at least 8 characters long",
+      status: 400,
+    });
+  }
   const hashedPassword = await hashPassword(password);
   const user: User = {
     name,
@@ -51,7 +60,6 @@ export const loginUser = async (req: any, res: any) => {
   const user = await searchUserByEmail(email);
 
     const hashedPassword = user?.hashedPassword as string;
-    // console.log(hashedPassword);
 
   if (user) {
 

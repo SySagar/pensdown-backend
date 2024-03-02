@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "nodemon index.ts",
     "start": "ts-node index.ts",
+    "test-env": "node ./scripts/dev.ts",
+    "prod-env": "node ./scripts/prod.ts",
     "test": "vitest"
   },
   "keywords": [],
@@ -48,6 +50,7 @@
     "@types/redis": "^4.0.11",
     "esm": "^3.2.25",
     "nodemon": "^3.0.1",
+    "vite": "^5.1.4",
     "vitest": "^1.3.1"
   },
   "engines": {

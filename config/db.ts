@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-dotenv.config();
+const environmentFile = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
+dotenv.config({path: environmentFile});
 
 const DBConnect = async () => {
     try {
