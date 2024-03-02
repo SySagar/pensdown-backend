@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "nodemon index.ts",
     "start": "ts-node index.ts",
+    "test-env": "node ./scripts/dev.ts",
+    "prod-env": "node ./scripts/prod.ts",
     "test": "vitest"
   },
   "keywords": [],
