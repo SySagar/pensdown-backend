@@ -4,7 +4,7 @@ import { generateAccessToken } from "../../utils/generateToken";
 import { searchUserByEmail } from "../../repository/auth";
 import { BASEURL } from "../../constants/baseUrl";
 
-test("login", async () => {
+test("check if user can login", async () => {
   const payload = {
     email: "sysagar07@gmail.com",
     password: "12345678",
@@ -24,13 +24,10 @@ test("login", async () => {
 test("verify token", async () => {
     const email = "sysagar07@gmail.com";
 
-    const user = await searchUserByEmail(email);
-    let token;
-    console.log('user',user);
-    if(user){
+  
 
-        token = generateAccessToken({ userEmail: "sysagar07@gmail.com" });
-    }
+     const   token = generateAccessToken({ userEmail: "sysagar07@gmail.com" });
+      console.log('token',token);
     
     const response = await fetch(`${BASEURL}/verify`, {
         method: "POST",
