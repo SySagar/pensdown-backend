@@ -4,7 +4,7 @@ import {
   fakeStrongPassword,
   fakeUserEmail,
   fakeWeakPassword,
-} from "../fakedata/userCreator";
+} from "../fakeData";
 import { generateAccessToken } from "../../utils/generateToken";
 import { passwordValidator } from "../../utils/isPasswordValid";
 import { hashPassword, comparePasswords } from "../../utils/bycrypt";
