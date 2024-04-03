@@ -6,6 +6,7 @@ import appRoutes from "./routes/index";
 
 const app = express();
 const whitelist = [
+    "https://pensdown.soumyasagar.in",
     "https://pensdown-staging.firebaseapp.com",
     "https://pensdown-staging.web.app",
     "https://pensdown-dad2d.firebaseapp.com",
